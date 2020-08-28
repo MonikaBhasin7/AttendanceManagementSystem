@@ -1,0 +1,156 @@
+<?php
+// Start the session
+session_start();
+include('database.php');
+if($_SESSION["error_adding_student"]=="1")
+{
+    echo '<script language="javascript">';
+    echo 'alert("rollno already exists")';
+    echo '</script>';
+    $_SESSION["error_adding_student"]="0";
+}
+//echo $_SESSION["error_adding_student"];
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function getSubCourse() {
+            var xmlhttp=new XMLHttpRequest();
+            xmlhttp.open("GET","fetch_subcourse.php?course="+document.getElementById("courses").value,false);
+            xmlhttp.send(null);
+            alert(xmlhttp.responseText);
+        }
+</script>
+    <style>
+        .square {
+            height: 550px;
+            width: 250px;
+            background-color: #99bbff;
+            margin-top: 30px;
+        }
+       
+        .btny
+        {
+            height: 35px;
+            width: 130px;
+        }
+
+        .btnytextbox
+        {
+            height: 35px;
+            width: 180px;
+        }
+
+        
+
+</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+    <center>
+
+        <div class="panel-group">
+            <div class="panel panel-info">
+                <div class="panel-heading"><h2>Add Student</h2></div>
+            
+        </div>
+        <div class="square">
+           <br>
+        <form role="form" method="post" action="add_student_new.php">
+        
+
+            <div class=" btn btn-secondary dropdown-toggle">
+                <label for="courses">Course Name</label>
+                <select onchange="getSubCourse()" class="form-control" id="courses" name="courses" 
+                onChange="getState(this.value);>
+                    <option value="" >Select Course</option>
+                        <?php
+                            require 'data.php';
+                            $courses=loadCourses();
+                            foreach ($courses as $coursey) {
+                                # code...
+                                echo "<option id='".$coursey["course_id"]."' value='".$coursey["course_id"]."'>".$coursey["course_name"]."</option>";
+                            }
+                        ?>
+                    
+                </select>
+            </div>
+
+            <br>
+            <br>
+            
+
+            <div class="btn btn-secondary dropdown-toggle">
+                <label for="sub_courses">Sub Courses</label>
+                    <select class="form-control" id="subcourse-list" name="sub_courses">
+                        <option>Select Sub Course</option>
+                        <?php
+                                $sub_courses=loadSubCourses();
+                                foreach ($sub_courses as $sub_coursey) {
+                                  # code...
+                                  echo "<option id='".$sub_coursey["subcourse_id"]."' 
+                                  value='".$sub_coursey["subcourse_id"]."'>".$sub_coursey["sub_course_name"]."</option>";
+                                }
+                            ?>
+                    </select>
+            </div>
+
+            <br>
+            <br>
+            
+        <div class="textbox row btn btn-secondary dropdown-toggle">
+            <div class="col-25">
+                <label for="name">Semester</label>
+            </div>
+            <div class="col-75">
+                <input type="integer" class="form-control btnytextbox"  name="semester_no">
+            </div>
+        </div>
+
+        <br>
+        <br>
+        
+        <div class="textbox  row  btn btn-secondary dropdown-toggle">
+            <div class="col-25">
+                <label for="name">Roll no.</label>
+            </div>
+            <div class="col-75">
+                <input type="integer" class="form-control btnytextbox" name="rollno">
+            </div>
+        </div>
+
+        <br>
+        <br>
+        
+        <div class="form-group">
+            <div class="textbox  row  btn btn-secondary dropdown-toggle">
+                <div >
+                    <label for="name">Name</label>
+                </div>
+                
+            <div >
+                <input type="integer" class="form-control btnytextbox" name="name">
+            </div>
+        </div>
+
+        <br>
+        <br>
+        
+        <div >
+            <input class="btn btn-primary  btny" type="submit" name="submit" value="Submit" >
+        </div>
+      
+        
+    </form>
+        </div>
+        
+    </center>
+    
+</body>
+</html>
